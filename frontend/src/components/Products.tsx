@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 interface ProductsProps {
   token: string;
@@ -30,7 +31,7 @@ export default function Products({ token }: ProductsProps) {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5005/products', {
+      const response = await fetch(`${API_URL}/products`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Products fetch karne mein fail ho gaya');
@@ -45,7 +46,7 @@ export default function Products({ token }: ProductsProps) {
 
   const fetchMovements = async () => {
     try {
-      const response = await fetch('http://localhost:5005/products/movements', {
+      const response = await fetch(`${API_URL}/products/movements`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -60,7 +61,7 @@ export default function Products({ token }: ProductsProps) {
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5005/products', {
+      const response = await fetch(`${API_URL}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

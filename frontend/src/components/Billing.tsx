@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 interface BillingProps {
   token: string;
@@ -26,9 +27,9 @@ export default function Billing({ token }: BillingProps) {
   const fetchData = async () => {
     try {
       const [custRes, prodRes, challanRes] = await Promise.all([
-        fetch('http://localhost:5005/customers', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('http://localhost:5005/products', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('http://localhost:5005/delivery', { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch(`${API_URL}/customers`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${API_URL}/products`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${API_URL}/delivery`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
 
       if (custRes.ok) setCustomers(await custRes.json());
@@ -48,7 +49,7 @@ export default function Billing({ token }: BillingProps) {
     setMessage({ type: '', text: '' });
 
     try {
-      const response = await fetch('http://localhost:5005/delivery', {
+      const response = await fetch(`${API_URL}/delivery`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

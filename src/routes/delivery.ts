@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mysql from 'mysql2/promise';
+import mysql from '../db';
 import dotenv from 'dotenv';
 import { verifyToken, authorizeRoles } from '../middleware/authMiddleware';
 

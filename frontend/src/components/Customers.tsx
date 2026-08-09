@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 interface CustomersProps {
   token: string;
@@ -35,7 +36,7 @@ export default function Customers({ token }: CustomersProps) {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:5005/customers', {
+      const response = await fetch(`${API_URL}/customers`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Customers fetch karne mein fail ho gaya');
@@ -79,8 +80,8 @@ export default function Customers({ token }: CustomersProps) {
     e.preventDefault();
     try {
       const url = editingId 
-        ? `http://localhost:5005/customers/${editingId}` 
-        : 'http://localhost:5005/customers';
+        ? `${API_URL}/customers/${editingId}` 
+        : `${API_URL}/customers`;
       
       const method = editingId ? 'PUT' : 'POST';
 

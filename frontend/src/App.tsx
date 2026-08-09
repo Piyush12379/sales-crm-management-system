@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Customers from './components/Customers'; 
 import Products from './components/Products'; 
 import Billing from './components/Billing'; 
+import { API_URL } from './config';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -19,7 +20,7 @@ function App() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5005/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

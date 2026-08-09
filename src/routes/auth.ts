@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import mysql from 'mysql2/promise';
+import mysql from '../db';
 import dotenv from 'dotenv';
 
 dotenv.config();
