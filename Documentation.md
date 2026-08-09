@@ -69,6 +69,49 @@ problem-statement-root/
 
 ---
 
+## 📊 Visual System Architecture
+
+This diagram illustrates how the frontend client, network security layers, Express router, and MySQL-to-Postgres bridge communicate with the database:
+
+```mermaid
+graph TD
+    subgraph Client ["Client Interface (Vercel Frontend)"]
+        A[React App / Vite] --> B[Tailwind CSS UI]
+        A --> C[PDF Invoice Generation]
+    end
+
+    subgraph Network ["Security & Network Layer"]
+        C2[HTTP Secure REST API Calls]
+        C3[JWT Authentication Token]
+    end
+
+    subgraph Backend ["Serverless Execution (Render Backend)"]
+        D[Express.js Engine] --> E[JWT Validation Middleware]
+        D --> F[Route Handlers]
+    end
+
+    subgraph Bridge ["Database Compatibility Bridge"]
+        G[MySQL to PostgreSQL Bridge Adapter]
+    end
+
+    subgraph Database ["Data Storage (Neon Cloud)"]
+        H[(Neon PostgreSQL Database)]
+    end
+
+    A ==> Network
+    Network ==> D
+    F ==> Bridge
+    Bridge ==> H
+
+    style Client fill:#e6f7ff,stroke:#1890ff,stroke-width:2px;
+    style Network fill:#fff0f6,stroke:#eb2f96,stroke-width:2px;
+    style Backend fill:#f6ffed,stroke:#52c41a,stroke-width:2px;
+    style Bridge fill:#fff7e6,stroke:#ffa940,stroke-width:2px;
+    style Database fill:#f9f0ff,stroke:#722ed1,stroke-width:2px;
+```
+
+---
+
 ## 👥 Role-Based Access Control (RBAC)
 
 The portal implements role boundaries on both the frontend and backend:
