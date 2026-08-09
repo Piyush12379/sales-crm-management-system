@@ -65,6 +65,7 @@ router.get('/setup-table', authMiddleware_1.verifyToken, (0, authMiddleware_1.au
 }));
 // 2. CREATE / GENERATE CHALLAN API
 router.post('/', authMiddleware_1.verifyToken, (0, authMiddleware_1.authorizeRoles)('Admin', 'Sales', 'Accounts'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const connection = yield pool.getConnection();
     try {
         const { customer_id, products, status } = req.body;
@@ -77,6 +78,7 @@ router.post('/', authMiddleware_1.verifyToken, (0, authMiddleware_1.authorizeRol
         const randomNum = Math.floor(1000 + Math.random() * 9000);
         const challan_number = `CHN-${new Date().getFullYear()}-${randomNum}`;
         let total_amount = 0;
+        let total_quantity = 0;
         const processedItems = [];
         // Step A: Validate stock and capture snapshot data
         for (const item of products) {
@@ -92,6 +94,7 @@ router.post('/', authMiddleware_1.verifyToken, (0, authMiddleware_1.authorizeRol
             const price_at_time = productData[0].price;
             const product_name_snapshot = productData[0].product_name;
             total_amount += (price_at_time * item.quantity);
+            total_quantity += item.quantity;
             processedItems.push({
                 product_id: item.product_id,
                 product_name_snapshot,
@@ -100,7 +103,7 @@ router.post('/', authMiddleware_1.verifyToken, (0, authMiddleware_1.authorizeRol
             });
         }
         // Step B: Insert into DeliveryNotes
-        const [noteResult] = yield connection.query('INSERT INTO DeliveryNotes (challan_number, customer_id, status, total_amount) VALUES (?, ?, ?, ?)', [challan_number, customer_id, challanStatus, total_amount]);
+        const [noteResult] = yield connection.query('INSERT INTO DeliveryNotes (challan_number, customer_id, status, total_amount, total_quantity, created_by) VALUES (?, ?, ?, ?, ?, ?)', [challan_number, customer_id, challanStatus, total_amount, total_quantity, ((_a = req.user) === null || _a === void 0 ? void 0 : _a.email) || 'system']);
         const deliveryNoteId = noteResult.insertId;
         // Step C: Insert items with snapshot and update stock ONLY if Confirmed
         for (const item of processedItems) {

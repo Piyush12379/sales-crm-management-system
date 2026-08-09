@@ -57,6 +57,9 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 // Server start karna
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
+exports.default = app;

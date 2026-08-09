@@ -209,7 +209,9 @@ export default function Billing({ token }: BillingProps) {
                   <th className="p-4">Challan Number</th>
                   <th className="p-4">Customer Name</th>
                   <th className="p-4">Status</th>
+                  <th className="p-4">Qty</th>
                   <th className="p-4">Total Amount</th>
+                  <th className="p-4">Created By</th>
                   <th className="p-4">Date</th>
                   <th className="p-4">Action</th>
                 </tr>
@@ -217,7 +219,7 @@ export default function Billing({ token }: BillingProps) {
               <tbody className="text-sm text-gray-700 divide-y divide-gray-50">
                 {challans.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-gray-400">Koi challan generate nahi hua hai.</td>
+                    <td colSpan={8} className="p-8 text-center text-gray-400">Koi challan generate nahi hua hai.</td>
                   </tr>
                 ) : (
                   challans.map(ch => (
@@ -231,7 +233,9 @@ export default function Billing({ token }: BillingProps) {
                           {ch.status}
                         </span>
                       </td>
+                      <td className="p-4 text-gray-700">{ch.total_quantity || 0}</td>
                       <td className="p-4 font-bold text-gray-800">₹{ch.total_amount}</td>
+                      <td className="p-4 text-xs text-gray-500">{ch.created_by || 'Unknown'}</td>
                       <td className="p-4 text-xs text-gray-500">{new Date(ch.created_at).toLocaleString()}</td>
                       <td className="p-4">
                         <button 

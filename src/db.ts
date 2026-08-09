@@ -187,7 +187,7 @@ async function initDatabase() {
             )
         `);
 
-        // 5. DeliveryNotes Table
+                // 5. DeliveryNotes Table
         await pgPool.query(`
             CREATE TABLE IF NOT EXISTS DeliveryNotes (
                 id SERIAL PRIMARY KEY,
@@ -198,6 +198,8 @@ async function initDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        await pgPool.query(`ALTER TABLE DeliveryNotes ADD COLUMN IF NOT EXISTS total_quantity INT DEFAULT 0`);
+        await pgPool.query(`ALTER TABLE DeliveryNotes ADD COLUMN IF NOT EXISTS created_by VARCHAR(255)`);
 
         // 6. DeliveryNoteItems Table
         await pgPool.query(`

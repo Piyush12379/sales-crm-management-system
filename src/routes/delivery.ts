@@ -74,6 +74,7 @@ router.post('/', verifyToken, authorizeRoles('Admin', 'Sales', 'Accounts'), asyn
         const challan_number = `CHN-${new Date().getFullYear()}-${randomNum}`;
 
         let total_amount = 0;
+        let total_quantity = 0;
         const processedItems = [];
 
         // Step A: Validate stock and capture snapshot data
@@ -98,6 +99,7 @@ router.post('/', verifyToken, authorizeRoles('Admin', 'Sales', 'Accounts'), asyn
             const product_name_snapshot = productData[0].product_name;
 
             total_amount += (price_at_time * item.quantity);
+            total_quantity += item.quantity;
 
             processedItems.push({
                 product_id: item.product_id,
@@ -109,8 +111,8 @@ router.post('/', verifyToken, authorizeRoles('Admin', 'Sales', 'Accounts'), asyn
 
         // Step B: Insert into DeliveryNotes
         const [noteResult]: any = await connection.query(
-            'INSERT INTO DeliveryNotes (challan_number, customer_id, status, total_amount) VALUES (?, ?, ?, ?)',
-            [challan_number, customer_id, challanStatus, total_amount]
+            'INSERT INTO DeliveryNotes (challan_number, customer_id, status, total_amount, total_quantity, created_by) VALUES (?, ?, ?, ?, ?, ?)',
+            [challan_number, customer_id, challanStatus, total_amount, total_quantity, req.user?.email || 'system']
         );
         const deliveryNoteId = noteResult.insertId;
 
