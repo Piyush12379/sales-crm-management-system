@@ -26,8 +26,6 @@ Here is a visual map of the project layout, dividing the backend, frontend, and 
 
 ```text
 problem-statement-root/
-├── api/
-│   └── index.ts                 # Serverless entrypoint for Vercel API
 ├── src/                         # Backend (Express & TypeScript)
 │   ├── index.ts                 # Express App definition & routing
 │   ├── db.ts                    # PostgreSQL Pool & MySQL compatibility layer
@@ -53,11 +51,7 @@ problem-statement-root/
 │   ├── package.json             
 │   ├── tailwind.config.js       
 │   └── vite.config.ts           
-├── public/                      # Backend dummy folder for Vercel builds
-│   └── index.html               
 ├── .gitignore                   
-├── .vercelignore                
-├── vercel.json                  # Backend Vercel router rewrite rules
 ├── render.yaml                  # Backend Render blueprint configurations
 ├── Dockerfile                   
 ├── docker-compose.yml           
