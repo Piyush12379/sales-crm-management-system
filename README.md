@@ -30,26 +30,36 @@ A comprehensive, production-ready Mini ERP & CRM system built with Node.js, Expr
    - **PDF Export:** Clean printable tax invoice/challan export view.
    - **Docker Support:** Fully containerized with `Dockerfile` and `docker-compose.yml`.
 
+## 🌐 Deployed Live Application URLs
+* **Frontend (Vercel)**: [https://mini-erp-crm-frontend.vercel.app](https://mini-erp-crm-frontend.vercel.app)
+* **Backend (Render)**: [https://mini-erp-crm-backend-5mzb.onrender.com](https://mini-erp-crm-backend-5mzb.onrender.com)
+* **Database (Neon PostgreSQL)**: Serverless Postgres Instance (`mini-erp-crm` on AWS US-East-2)
+
 ---
 
 ## 🔑 Test Login Credentials
+Use the credentials below to log into the frontend dashboard. The common password for all test accounts is **`admin123`**.
 
-| Role | Email | Access Level |
-| :--- | :--- | :--- |
-| **Admin** | `admin@test.com` | Full System & Setup Access |
-| **Sales** | `sales@test.com` | CRM & Challan Generation |
-| **Warehouse** | `warehouse@test.com` | Inventory & Stock Logs |
-| **Accounts** | `accounts@test.com` | Billing & Invoices |
+| Role | Email | Password | Access Level |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@test.com` | `admin123` | Full System & Setup Access |
+| **Sales** | `sales@test.com` | `admin123` | CRM & Challan Generation |
+| **Warehouse** | `warehouse@test.com` | `admin123` | Inventory & Stock Logs |
+| **Accounts** | `accounts@test.com` | `admin123` | Billing & Invoices |
 
 ---
 
 ## 🛠️ Local Installation & Setup Instructions
+*(Note: Codebase is configured to support PostgreSQL for Neon Cloud Deployment)*
 
 ### Prerequisites
 - Node.js (v18 or v20+)
-- MySQL Server installed and running
+- PostgreSQL Database running locally (or use your Neon Database connection string in `.env`)
 
 ### 1. Database Setup
-Create a MySQL database named `mini_erp_crm`:
-```sql
-CREATE DATABASE mini_erp_crm;
+Ensure PostgreSQL is running and update the `.env` file in the root with your connection parameters:
+```env
+PORT=5005
+DATABASE_URL=your_postgres_connection_string
+JWT_SECRET=super_secret_key_123
+```
