@@ -126,9 +126,10 @@ class PGPoolWrapper {
 
 const poolInstance = new PGPoolWrapper();
 
-// Automatically create Users table if it doesn't exist
+// Automatically create all tables if they don't exist
 async function initDatabase() {
     try {
+        // 1. Users Table
         await pgPool.query(`
             CREATE TABLE IF NOT EXISTS Users (
                 id SERIAL PRIMARY KEY,
@@ -139,7 +140,78 @@ async function initDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('Postgres Database initialized (Users table verified/created).');
+
+        // 2. Customers Table
+        await pgPool.query(`
+            CREATE TABLE IF NOT EXISTS Customers (
+                id SERIAL PRIMARY KEY,
+                customer_name VARCHAR(255) NOT NULL,
+                mobile_number VARCHAR(50) NOT NULL,
+                email VARCHAR(255),
+                business_name VARCHAR(255),
+                gst_number VARCHAR(50),
+                customer_type VARCHAR(50) DEFAULT 'Wholesale',
+                address TEXT,
+                status VARCHAR(50) DEFAULT 'Lead',
+                follow_up_date DATE,
+                notes TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // 3. Products Table
+        await pgPool.query(`
+            CREATE TABLE IF NOT EXISTS Products (
+                id SERIAL PRIMARY KEY,
+                product_name VARCHAR(255) NOT NULL,
+                sku_code VARCHAR(100) NOT NULL UNIQUE,
+                category VARCHAR(100),
+                price DECIMAL(10, 2) NOT NULL,
+                stock_quantity INT NOT NULL,
+                warehouse_location VARCHAR(100),
+                min_stock_alert INT DEFAULT 5,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // 4. StockMovements Table
+        await pgPool.query(`
+            CREATE TABLE IF NOT EXISTS StockMovements (
+                id SERIAL PRIMARY KEY,
+                product_id INT NOT NULL REFERENCES Products(id) ON DELETE CASCADE,
+                quantity_changed INT NOT NULL,
+                movement_type VARCHAR(50) NOT NULL,
+                reason VARCHAR(255),
+                user_email VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // 5. DeliveryNotes Table
+        await pgPool.query(`
+            CREATE TABLE IF NOT EXISTS DeliveryNotes (
+                id SERIAL PRIMARY KEY,
+                challan_number VARCHAR(100) NOT NULL UNIQUE,
+                customer_id INT NOT NULL REFERENCES Customers(id) ON DELETE CASCADE,
+                status VARCHAR(50) DEFAULT 'Draft',
+                total_amount DECIMAL(10, 2) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // 6. DeliveryNoteItems Table
+        await pgPool.query(`
+            CREATE TABLE IF NOT EXISTS DeliveryNoteItems (
+                id SERIAL PRIMARY KEY,
+                delivery_note_id INT NOT NULL REFERENCES DeliveryNotes(id) ON DELETE CASCADE,
+                product_id INT NOT NULL,
+                product_name_snapshot VARCHAR(255) NOT NULL,
+                price_at_time DECIMAL(10, 2) NOT NULL,
+                quantity INT NOT NULL
+            )
+        `);
+
+        console.log('Postgres Database initialized (All tables verified/created).');
     } catch (error) {
         console.error('Error during database initialization:', error);
     }
