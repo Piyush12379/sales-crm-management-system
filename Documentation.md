@@ -20,6 +20,55 @@ The application is built using a decoupled **Client-Server Architecture**:
 
 ---
 
+## 📂 Project Directory Structure
+
+Here is a visual map of the project layout, dividing the backend, frontend, and DevOps configurations:
+
+```text
+problem-statement-root/
+├── api/
+│   └── index.ts                 # Serverless entrypoint for Vercel API
+├── src/                         # Backend (Express & TypeScript)
+│   ├── index.ts                 # Express App definition & routing
+│   ├── db.ts                    # PostgreSQL Pool & MySQL compatibility layer
+│   ├── middleware/              # Security & JWT authorization layers
+│   │   ├── auth.ts              
+│   │   └── authMiddleware.ts    
+│   └── routes/                  # Express REST Router Controllers
+│       ├── auth.ts              # Seeding users & login validation
+│       ├── customers.ts         # CRM Customers management APIs
+│       ├── products.ts          # Inventory & Stock Movement logs
+│       └── delivery.ts          # Sales Challan & Transactional Billing
+├── frontend/                    # Frontend (React + Vite + Tailwind CSS)
+│   ├── public/                  
+│   ├── src/                     
+│   │   ├── components/          # Dashboard Module Views
+│   │   │   ├── Billing.tsx      # Challans view & PDF export
+│   │   │   ├── Customers.tsx    # Customer CRM grid
+│   │   │   └── Products.tsx     # Stock edits & Movement logs
+│   │   ├── App.tsx              # Base dashboard template & Routing
+│   │   ├── config.ts            # Dynamic environment API configs
+│   │   ├── main.tsx             
+│   │   └── index.css            # Base Tailwind layout
+│   ├── package.json             
+│   ├── tailwind.config.js       
+│   └── vite.config.ts           
+├── public/                      # Backend dummy folder for Vercel builds
+│   └── index.html               
+├── .gitignore                   
+├── .vercelignore                
+├── vercel.json                  # Backend Vercel router rewrite rules
+├── render.yaml                  # Backend Render blueprint configurations
+├── Dockerfile                   
+├── docker-compose.yml           
+├── package.json                 # Backend Node dependencies configuration
+├── tsconfig.json                
+├── README.md                    # Deployment guide & setup details
+└── Documentation.md             # Architecture & system reference doc
+```
+
+---
+
 ## 👥 Role-Based Access Control (RBAC)
 
 The portal implements role boundaries on both the frontend and backend:
